@@ -1,13 +1,20 @@
 import React from 'react'
 import { render } from 'react-dom'
-import styled from 'styled-components'
+import { Router } from '@reach/router'
 
-const Test = styled.h1`
-  color: red;
-`
+import Login from './components/Login'
+import ProtectedRoute from './components/ProtectedRoute'
+
+const Home = () => <div>Hello I am Home</div>
+
+const Dash = () => <div>Hello I am Dash</div>
 
 const App = () => (
-  <Test>Hello I am a test</Test>
+  <Router>
+    <Home path="/" />
+    <ProtectedRoute component={Dash} path="/dashboard" />
+    <Login path="/login" />
+  </Router>
 )
 
 render(<App />, document.getElementById('root'))

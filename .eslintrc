@@ -1,10 +1,5 @@
 {
-  "extends": ["airbnb", "prettier", "prettier/react"],
-  "plugins": ["prettier"],
-  "ecmaFeatures": {
-    "jsx": true,
-    "modules": true
-  },
+  "extends": ["react", "airbnb"],
   "rules": {
     "react/jsx-filename-extension": [
       1,
@@ -15,7 +10,8 @@
     "react/prop-types": 0,
     "no-underscore-dangle": 0,
     "import/imports-first": ["error", "absolute-first"],
-    "import/newline-after-import": "error"
+    "import/newline-after-import": "error",
+    "semi": ["error", "never"]
   },
   "globals": {
     "window": true,
