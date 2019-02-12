@@ -29,13 +29,23 @@ export class AuthProvider extends Component {
   }
 
   componentDidMount() {
-    // This is bad. Fix this.
-    whoami((error, user) => {
-      this.setState({
-        authorised: true,
-        user,
+    // This is bad. Probably fix this.
+    if (localStorage.getItem('token')) {
+      whoami((error, user) => {
+        if (!error) {
+          this.setState({
+            authorised: true,
+            user,
+          })
+        }
       })
-    })
+    } else {
+      this.setState({
+        authError: authErrorShape,
+        authorised: false,
+        user: userShape,
+      })
+    }
   }
 
   login = (credentials, location) => apiLogin(
@@ -60,9 +70,7 @@ export class AuthProvider extends Component {
             authorised,
             authError: authErrorShape,
             user,
-          })
-
-          navigate(location || '/dashboard')
+          }, () => navigate(location || '/dashboard'))
         })
       }
     },

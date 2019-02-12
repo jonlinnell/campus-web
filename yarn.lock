@@ -954,6 +954,13 @@ autoprefixer@^6.3.1:
     postcss "^5.2.16"
     postcss-value-parser "^3.2.3"
 
+axios-cache-adapter@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/axios-cache-adapter/-/axios-cache-adapter-2.2.1.tgz#8980d5bbb825d57090b0058558500eb32ae775f0"
+  dependencies:
+    axios "^0.18.0"
+    lodash "^4.17.11"
+
 axios@^0.18.0:
   version "0.18.0"
   resolved "https://registry.yarnpkg.com/axios/-/axios-0.18.0.tgz#32d53e4851efdc0a11993b6cd000789d70c05102"
