@@ -1,20 +1,22 @@
 import React from 'react'
 import { render } from 'react-dom'
 import { Router } from '@reach/router'
+import CssBaseline from '@material-ui/core/CssBaseline'
 
-import Login from './components/Login'
+import Login from './components/views/Login'
 import ProtectedRoute from './components/ProtectedRoute'
+import Dashboard from './components/views/Dashboard'
 
 const Home = () => <div>Hello I am Home</div>
 
-const Dash = () => <div>Hello I am Dash</div>
-
 const App = () => (
-  <Router>
-    <Home path="/" />
-    <ProtectedRoute component={Dash} path="/dashboard" />
-    <Login path="/login" />
-  </Router>
+  <CssBaseline>
+    <Router>
+      <Home path="/" />
+      <ProtectedRoute component={Dashboard} path="/dashboard" />
+      <Login path="/login" />
+    </Router>
+  </CssBaseline>
 )
 
 render(<App />, document.getElementById('root'))
