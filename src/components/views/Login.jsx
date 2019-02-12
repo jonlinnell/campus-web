@@ -1,20 +1,13 @@
 import React, { Component } from 'react'
-import axios from 'axios'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
-import CssBaseline from '@material-ui/core/CssBaseline'
 import TextField from '@material-ui/core/TextField'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import withStyles from '@material-ui/core/styles/withStyles'
 
-import { navigate } from '@reach/router'
-
-const blankError = {
-  type: '',
-  message: '',
-}
+import { withAuthContext } from '../../lib/authContext'
 
 const styles = theme => ({
   main: {
@@ -49,14 +42,13 @@ const styles = theme => ({
   },
 })
 
-class SignIn extends Component {
+class Login extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
       username: '',
       password: '',
-      error: blankError,
     }
 
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -68,45 +60,19 @@ class SignIn extends Component {
 
   handleSubmit(e) {
     e.preventDefault()
+
+    const { login } = this.props
     const { username, password } = this.state
 
-    this.setState({ error: blankError }, () => {
-      axios
-        .post('http://localhost:3000/auth/login', { username, password })
-        .then((response) => {
-          localStorage.setItem('token', response.data.token)
-          navigate('/dashboard')
-        })
-        .catch((error) => {
-          if (error.response) {
-            const { type, message } = error.response.data
-            this.setState({ error: { type, message } })
-          } else if (error.request) {
-            this.setState({
-              error: {
-                type: 'general',
-                message: 'Unable to connect to server.',
-              },
-            })
-          } else {
-            this.setState({
-              error: {
-                type: 'general',
-                message: 'Unable to create the request.',
-              },
-            })
-          }
-        })
-    })
+    login({ username, password })
   }
 
   render() {
-    const { classes } = this.props
-    const { username, password, error } = this.state
+    const { classes, authError } = this.props
+    const { username, password } = this.state
 
     return (
       <main className={classes.main}>
-        <CssBaseline />
         <Paper className={classes.paper}>
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
@@ -116,8 +82,8 @@ class SignIn extends Component {
           </Typography>
           <form className={classes.form} onSubmit={this.handleSubmit}>
             <TextField
-              error={error.type === 'username'}
-              helperText={error.type === 'username' ? error.message : ' '}
+              error={authError.type === 'username'}
+              helperText={authError.type === 'username' ? authError.message : ' '}
               id="username"
               label="Username"
               className={classes.textField}
@@ -129,8 +95,8 @@ class SignIn extends Component {
               fullWidth
             />
             <TextField
-              error={error.type === 'password'}
-              helperText={error.type === 'password' ? error.message : ' '}
+              error={authError.type === 'password'}
+              helperText={authError.type === 'password' ? authError.message : ' '}
               id="password"
               label="Password"
               className={classes.textField}
@@ -152,8 +118,8 @@ class SignIn extends Component {
               Sign in
             </Button>
           </form>
-          {error.type === 'general' ? (
-            <Typography color="error">{error.message}</Typography>
+          {authError.type === 'general' ? (
+            <Typography color="error">{authError.message}</Typography>
           ) : null}
         </Paper>
       </main>
@@ -161,4 +127,4 @@ class SignIn extends Component {
   }
 }
 
-export default withStyles(styles)(SignIn)
+export default withStyles(styles)(withAuthContext(Login))

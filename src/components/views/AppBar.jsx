@@ -8,6 +8,8 @@ import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
 
+import { withAuthContext } from '../../lib/authContext'
+
 const styles = {
   appbar: {
     flexGrow: 1,
@@ -21,8 +23,14 @@ const styles = {
   },
 }
 
-function ButtonAppBar(props) {
-  const { classes } = props
+const ButtonAppBar = (props) => {
+  const {
+    classes,
+    authorised,
+    user,
+    logout,
+  } = props
+
   return (
     <div className={classes.appbar}>
       <AppBar position="static">
@@ -33,11 +41,15 @@ function ButtonAppBar(props) {
           <Typography variant="h6" color="inherit" className={classes.grow}>
             Campus
           </Typography>
-          <Button color="inherit">Login</Button>
+          {
+            authorised
+              ? <Button color="inherit" onClick={logout}>{ user.givenName }</Button>
+              : <Button color="inherit" href="/login">Login</Button>
+          }
         </Toolbar>
       </AppBar>
     </div>
   )
 }
 
-export default withStyles(styles)(ButtonAppBar)
+export default withStyles(styles)(withAuthContext(ButtonAppBar))

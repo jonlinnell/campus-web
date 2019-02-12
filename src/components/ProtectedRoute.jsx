@@ -1,10 +1,14 @@
 import React from 'react'
 import { Redirect } from '@reach/router'
 
-const ProtectedRoute = ({ component: Component, ...rest }) => (localStorage.getItem('token') ? (
-  <Component {...rest} />
-) : (
-  <Redirect to="/login" />
-))
+import { withAuthContext } from '../lib/authContext'
 
-export default ProtectedRoute
+const ProtectedRoute = ({ component: Component, authorised, ...rest }) => {
+  if (authorised) {
+    return <Component {...rest} />
+  }
+
+  return <Redirect to="/login" noThrow />
+}
+
+export default withAuthContext(ProtectedRoute)

@@ -7,16 +7,19 @@ import Login from './components/views/Login'
 import ProtectedRoute from './components/ProtectedRoute'
 import Dashboard from './components/views/Dashboard'
 
+import { AuthProvider } from './lib/authContext'
+
 const Home = () => <div>Hello I am Home</div>
 
 const App = () => (
-  <CssBaseline>
+  <AuthProvider>
+    <CssBaseline />
     <Router>
       <Home path="/" />
       <ProtectedRoute component={Dashboard} path="/dashboard" />
       <Login path="/login" />
     </Router>
-  </CssBaseline>
+  </AuthProvider>
 )
 
 render(<App />, document.getElementById('root'))
